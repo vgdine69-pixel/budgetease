@@ -46,4 +46,52 @@
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
+    
+    <!-- Blog Page -->
+    <url>
+        <loc>https://budgetease.info/blog.html</loc>
+        <lastmod>2026-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- About Page -->
+    <url>
+        <loc>https://budgetease.info/about.html</loc>
+        <lastmod>2026-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Money Management Page -->
+    <url>
+        <loc>https://budgetease.info/money-management.html</loc>
+        <lastmod>2026-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Expense Tracker Page -->
+    <url>
+        <loc>https://budgetease.info/expense-tracker.html</loc>
+        <lastmod>2026-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Budget Calculator Page -->
+    <url>
+        <loc>https://budgetease.info/budget-calculator.html</loc>
+        <lastmod>2026-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Financial Planning Page -->
+    <url>
+        <loc>https://budgetease.info/financial-planning.html</loc>
+        <lastmod>2026-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
 </urlset>
