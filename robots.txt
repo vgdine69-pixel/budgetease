@@ -1,0 +1,5 @@
+# robots.txt for BudgetEase
+User-agent: *
+Allow: /
+
+Sitemap: https://budgetease.info/sitemap.xml

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BudgetEase - Expense Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="BudgetEase - Free online expense tracker and budget manager. Track expenses, manage monthly budget, and save more money with AI-powered budget suggestions. Support for multiple currencies including INR, USD, EUR, GBP.">
+    <meta name="keywords" content="expense tracker, budget manager, personal finance, money management, expense tracking app, budget planner, financial tracker, save money, monthly budget, spending tracker, free budget app, AI budget suggestion">
+    <meta name="author" content="BudgetEase">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="BudgetEase - Free Expense Tracker & Budget Manager">
+    <meta property="og:description" content="Track expenses, manage budget, and save more! Free online expense tracker with AI-powered budget suggestions and multi-currency support.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://budgetease.info">
+    <meta property="og:site_name" content="BudgetEase">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BudgetEase - Free Expense Tracker & Budget Manager">
+    <meta name="twitter:description" content="Track expenses, manage budget, and save more! Free online expense tracker with AI-powered budget suggestions.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://budgetease.info">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+<style>
+body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);padding:20px;margin:0}
+.container{max-width:1200px;margin:0 auto}
+.header{text-align:center;color:#fff;margin-bottom:30px}
+.dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:30px}
+.card{background:#fff;padding:25px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+.card h3{color:#666;font-size:0.9em;margin:0 0 10px}
+.amount{font-size:2em;font-weight:bold}
+.spent{color:#e74c3c}
+.budget{color:#3498db}
+.remaining{color:#10b981}
+.main{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form,.list{background:#fff;padding:30px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+input,select{width:100%;padding:12px;margin:8px 0 20px;border:2px solid #e0e0e0;border-radius:8px;font-size:1em}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:8px;font-size:1.1em;cursor:pointer}
+.expense{display:flex;justify-content:space-between;padding:15px;border-bottom:1px solid #f0f0f0}
+.delete{background:#e74c3c;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5302127439054265"
+     crossorigin="anonymous"></script>
+         
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BudgetEase",
+        "description": "Free online expense tracker and budget manager with AI-powered suggestions",
+        "url": "https://budgetease.info",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Expense tracking",
+            "Budget management",
+            "AI budget suggestions",
+            "Multi-currency support",
+            "Local data storage",
+            "Category-based expenses"
+        ],
+        "browserRequirements": "Requires JavaScript. Requires HTML5."
+    }
+    </script>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>💰 BudgetEase</h1><p>Track expenses, manage budget, save more!</p></div>
+<div style="text-align:center;margin:20px 0;padding:15px;background:#f0f0f0;border-radius:10px">
+<label for="currency" style="font-size:16px;font-weight:bold;margin-right:10px">💱 Currency:</label>
+<select id="currency" onchange="updateCurrency()" style="padding:8px;font-size:14px;border-radius:5px;border:2px solid #667eea">
+<option value="₹">🇮🇳 INR (₹)</option>
+<option value="$">🇺🇸 USD ($)</option>
+<option value="€">🇪🇺 EUR (€)</option>
+<option value="£">🇬🇧 GBP (£)</option>
+<option value="¥">🇯🇵 JPY (¥)</option>
+<option value="A$">🇦🇺 AUD (A$)</option>
+<option value="C$">🇨🇦 CAD (C$)</option>
+</select>
+</div>
+<div class="dashboard">
+<div class="card"><h3>Total Spent</h3><div class="amount spent" textContent='₹'id="spent">₹0.00</div></div>
+<div class="card"><h3>Budget</h3><div class="amount budget" id="budget">₹0</div></div>
+<div class="card"><h3>Remaining</h3><div class="amount remaining" id="remain">₹0</div></div>
+</div>
+<div class="card" style="margin-bottom:20px">
+<h2>Set Budget</h2>
+<div style="text-align:center;margin:20px 0"><button onclick="getAISuggestion()" style="padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-weight:bold">🤖 AI Budget Suggestion</button></div>
+<input type="number" id="budgetIn" placeholder="Enter monthly budget">
+<button class="btn" onclick="setBudget()">Set Budget</button>
+</div>
+<div class="main">
+<div class="form">
+<h2>Add Expense</h2>
+<input type="text" id="name" placeholder="Expense name" required>
+<input type="number" id="amt" placeholder="Amount" required>
+<select id="cat">
+<option>Food</option>
+<option>Transport</option>
+<option>Shopping</option>
+<option>Bills</option>
+<option>Entertainment</option>
+<option>Other</option>
+</select>
+<input type="date" id="date">
+<button class="btn" onclick="add()">Add Expense</button>
+</div>
+<div class="list">
+<h2>Expenses</h2>
+<div id="list"><p style="text-align:center;color:#999">No expenses yet</p></div>
+</div>
+</div>
+</div>
+<script>
+    let currencySymbol='₹';function updateCurrency(){currencySymbol=document.getElementById('currency').value;localStorage.setItem('currency',currencySymbol);update();show();}window.onload=function(){const saved=localStorage.getItem('currency');if(saved){currencySymbol=saved;document.getElementById('currency').value=saved;}update();show();}
+let exp=JSON.parse(localStorage.getItem('exp'))||[];
+let bud=parseFloat(localStorage.getItem('bud'))||0;
+document.getElementById('date').valueAsDate=new Date();
+function setBudget(){bud=parseFloat(document.getElementById('budgetIn').value)||0;localStorage.setItem('bud',bud);update();alert('Budget set!')}
+function add(){let e={id:Date.now(),name:document.getElementById('name').value,amt:parseFloat(document.getElementById('amt').value),cat:document.getElementById('cat').value,date:document.getElementById('date').value};exp.unshift(e);localStorage.setItem('exp',JSON.stringify(exp));document.getElementById('name').value='';document.getElementById('amt').value='';update();show()}
+function del(id){if(confirm('Delete?')){exp=exp.filter(e=>e.id!==id);localStorage.setItem('exp',JSON.stringify(exp));update();show()}}
+function update(){let tot=exp.reduce((s,e)=>s+e.amt,0);document.getElementById('spent').textContent=currencySymbol+tot.toFixed(2);document.getElementById('budget').textContent=currencySymbol+bud.toFixed(2);document.getElementById('remain').textContent=currencySymbol+(bud-tot).toFixed(2)}
+function show(){let l=document.getElementById('list');if(exp.length===0){l.innerHTML='<p style="text-align:center;color:#999">No expenses yet</p>';return}l.innerHTML=exp.map(e=>`<div class="expense"><div><b>${e.name}</b><br><small>${e.cat} • ${e.date}</small></div><div><span style="font-size:1.2em;color:#e74c3c;margin-right:15px">${currencySymbol}${e.amt}</span><button class="delete" onclick="del(${e.id})">Delete</button></div></div>`).join('')}
+</script>
+    <!-- Email Newsletter Signup -->
+    <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:40px 20px;text-align:center;margin-top:30px;border-radius:15px;color:white;">
+        <h2 style="margin:0 0 10px 0;font-size:28px;">📧 Stay Updated!</h2>
+        <p style="margin:0 0 20px 0;font-size:16px;opacity:0.9;">Get budget tips, updates & exclusive features delivered to your inbox</p>
+        <div style="max-width:500px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+            <input type="email" id="newsletterEmail" placeholder="Enter your email address" style="flex:1;min-width:250px;padding:12px 20px;border:none;border-radius:25px;font-size:16px;">
+            <button onclick="subscribeNewsletter()" style="padding:12px 30px;background:#4CAF50;color:white;border:none;border-radius:25px;font-size:16px;font-weight:bold;cursor:pointer;transition:0.3s;">Subscribe</button>
+        </div>
+        <p id="subscribeMessage" style="margin:15px 0 0 0;font-size:14px;min-height:20px;"></p>
+    </div>
+
+    <script>
+    function subscribeNewsletter(){
+        const email=document.getElementById('newsletterEmail').value;
+        const msg=document.getElementById('subscribeMessage');
+        if(!email||!email.includes('@')){
+            msg.textContent='⚠️ Please enter a valid email address';
+            msg.style.color='#ffeb3b';
+            return;
+        }
+        // Save to localStorage
+        let subscribers=JSON.parse(localStorage.getItem('newsletterSubscribers')||'[]');
+        if(subscribers.includes(email)){
+            msg.textContent='✅ You are already subscribed!';
+            msg.style.color='#4CAF50';
+        }else{
+            subscribers.push(email);
+            localStorage.setItem('newsletterSubscribers',JSON.stringify(subscribers));
+            msg.textContent='🎉 Thank you for subscribing! Check your inbox soon.';
+            msg.style.color='#4CAF50';
+            document.getElementById('newsletterEmail').value='';
+            // Send to server (you can add email service integration here)
+            console.log('New subscriber:',email);
+        }
+    }
+    </script>
+</body>
+</html>

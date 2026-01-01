@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudgetEase - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 24px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 28px;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-left: 4px solid white;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            width: 24px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        /* Section Styles */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Dashboard Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+
+        .stat-card.total {
+            border-left-color: #ef4444;
+        }
+
+        .stat-card.budget {
+            border-left-color: #3b82f6;
+        }
+
+        .stat-card.remaining {
+            border-left-color: #10b981;
+        }
+
+        .stat-card.expenses {
+            border-left-color: #f59e0b;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            font-size: 24px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .stat-change {
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .stat-change.positive {
+            color: #10b981;
+        }
+
+        .stat-change.negative {
+            color: #ef4444;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        /* Budgets Section */
+        .budget-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .budget-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .budget-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .budget-amount {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .budget-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .add-budget-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .add-budget-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Reminders Section */
+        .reminder-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .reminder-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-left: 4px solid;
+        }
+
+        .reminder-item.urgent {
+            border-left-color: #ef4444;
+        }
+
+        .reminder-item.upcoming {
+            border-left-color: #f59e0b;
+        }
+
+        .reminder-item.completed {
+            border-left-color: #10b981;
+            opacity: 0.6;
+        }
+
+        .reminder-icon {
+            font-size: 32px;
+        }
+
+        .reminder-content {
+            flex: 1;
+        }
+
+        .reminder-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .reminder-date {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .reminder-amount {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        /* Analytics Section */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .chart-card h3 {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .category-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .category-name {
+            flex: 1;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .category-amount {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .category-percentage {
+            font-size: 13px;
+            color: #6b7280;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <span class="logo">🍃</span>
+                <h1 class="brand-name">BudgetEase</h1>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" onclick="showSection('dashboard')">
+                            <span class="nav-icon">📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="page2-budget.html" class="nav-link">
+                            <span class="nav-icon">💰</span>
+                            <span>Budgets</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#reminders" class="nav-link" onclick="showSection('reminders')">
+                            <span class="nav-icon">🔔</span>
+                            <span>Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analytics" class="nav-link" onclick="showSection('analytics')">
+                            <span class="nav-icon">📈</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#support" class="nav-link" onclick="showSection('support')">
+                            <span class="nav-icon">📧</span>
+                            <span>Support</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back! Here's your financial overview</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card total">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Spent</span>
+                            <span class="stat-icon">💸</span>
+                        </div>
+                        <div class="stat-value">₹25,430</div>
+                        <div class="stat-change negative">↑ 12% from last month</div>
+                    </div>
+                    <div class="stat-card budget">
+                        <div class="stat-header">
+                            <span class="stat-label">Monthly Budget</span>
+                            <span class="stat-icon">🎯</span>
+                        </div>
+                        <div class="stat-value">₹50,000</div>
+                        <div class="stat-change positive">↓ 5% under budget</div>
+                    </div>
+                    <div class="stat-card remaining">
+                        <div class="stat-header">
+                            <span class="stat-label">Remaining</span>
+                            <span class="stat-icon">💵</span>
+                        </div>
+                        <div class="stat-value">₹24,570</div>
+                        <div class="stat-change positive">49% of budget left</div>
+                    </div>
+                    <div class="stat-card expenses">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Expenses</span>
+                            <span class="stat-icon">📄</span>
+                        </div>
+                        <div class="stat-value">47</div>
+                        <div class="stat-change positive">↑ 8 new this week</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📈 Spending Trend</h2>
+                    <div class="chart-placeholder">
+                        <p>Chart: Monthly spending trend visualization</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>🔥 Recent Expenses</h2>
+                    <div class="budget-list">
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🍔 Grocery Shopping</span>
+                                <span class="budget-amount">₹2,450</span>
+                            </div>
+                            <div class="budget-info">
+                                <span>Food & Dining</span>
+                                <span>Today, 10:30 AM</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">⛽ Fuel</span>
+                                <span class="budget-amount">₹1,200</span>
+                            </div>
+                            <div class="budget-info">
+                                <span>Transportation</span>
+                                <span>Yesterday, 6:15 PM</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🎬 Movie Tickets</span>
+                                <span class="budget-amount">₹800</span>
+                            </div>
+                            <div class="budget-info">
+                                <span>Entertainment</span>
+                                <span>Dec 28, 8:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Budgets Section -->
+            <section id="budgets" class="section">
+                <div class="header">
+                    <h1>Budgets</h1>
+                    <p>Manage your category budgets and track spending</p>
+                </div>
+
+                <button class="add-budget-btn">
+                    <span>➕</span>
+                    <span>Add New Budget</span>
+                </button>
+
+                <div class="card">
+                    <h2>📊 Active Budgets</h2>
+                    <div class="budget-list">
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🍔 Food & Dining</span>
+                                <span class="budget-amount">₹8,500 / ₹15,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 57%;"></div>
+                            </div>
+                            <div class="budget-info">
+                                <span>57% used</span>
+                                <span>₹6,500 remaining</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🚗 Transportation</span>
+                                <span class="budget-amount">₹4,200 / ₹8,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 53%;"></div>
+                            </div>
+                            <div class="budget-info">
+                                <span>53% used</span>
+                                <span>₹3,800 remaining</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🎬 Entertainment</span>
+                                <span class="budget-amount">₹2,800 / ₹5,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 56%;"></div>
+                            </div>
+                            <div class="budget-info">
+                                <span>56% used</span>
+                                <span>₹2,200 remaining</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🛍️ Shopping</span>
+                                <span class="budget-amount">₹5,930 / ₹10,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 59%;"></div>
+                            </div>
+                            <div class="budget-info">
+                                <span>59% used</span>
+                                <span>₹4,070 remaining</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">💡 Bills & Utilities</span>
+                                <span class="budget-amount">₹4,000 / ₹12,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 33%;"></div>
+                            </div>
+                            <div class="budget-info">
+                                <span>33% used</span>
+                                <span>₹8,000 remaining</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reminders Section -->
+            <section id="reminders" class="section">
+                <div class="header">
+                    <h1>Reminders</h1>
+                    <p>Stay on top of your bills and payments</p>
+                </div>
+
+                <button class="add-budget-btn">
+                    <span>➕</span>
+                    <span>Add New Reminder</span>
+                </button>
+
+                <div class="card">
+                    <h2>🔔 Upcoming Reminders</h2>
+                    <div class="reminder-list">
+                        <div class="reminder-item urgent">
+                            <span class="reminder-icon">⚠️</span>
+                            <div class="reminder-content">
+                                <div class="reminder-title">Electricity Bill</div>
+                                <div class="reminder-date">Due: Tomorrow, Dec 31, 2025</div>
+                            </div>
+                            <div class="reminder-amount">₹3,200</div>
+                        </div>
+                        <div class="reminder-item upcoming">
+                            <span class="reminder-icon">📱</span>
+                            <div class="reminder-content">
+                                <div class="reminder-title">Mobile Recharge</div>
+                                <div class="reminder-date">Due: Jan 2, 2026</div>
+                            </div>
+                            <div class="reminder-amount">₹599</div>
+                        </div>
+                        <div class="reminder-item upcoming">
+                            <span class="reminder-icon">🏠</span>
+                            <div class="reminder-content">
+                                <div class="reminder-title">House Rent</div>
+                                <div class="reminder-date">Due: Jan 5, 2026</div>
+                            </div>
+                            <div class="reminder-amount">₹15,000</div>
+                        </div>
+                        <div class="reminder-item upcoming">
+                            <span class="reminder-icon">📺</span>
+                            <div class="reminder-content">
+                                <div class="reminder-title">Netflix Subscription</div>
+                                <div class="reminder-date">Due: Jan 8, 2026</div>
+                            </div>
+                            <div class="reminder-amount">₹649</div>
+                        </div>
+                        <div class="reminder-item completed">
+                            <span class="reminder-icon">✅</span>
+                            <div class="reminder-content">
+                                <div class="reminder-title">Internet Bill</div>
+                                <div class="reminder-date">Paid: Dec 28, 2025</div>
+                            </div>
+                            <div class="reminder-amount">₹999</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="section">
+                <div class="header">
+                    <h1>Analytics</h1>
+                    <p>Detailed insights into your spending patterns</p>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <h3>🥧 Spending by Category</h3>
+                        <div class="chart-placeholder" style="height: 250px;">
+                            <p>Pie Chart: Category breakdown</p>
+                        </div>
+                        <div class="category-list" style="margin-top: 20px;">
+                            <div class="category-item">
+                                <div class="category-color" style="background: #667eea;"></div>
+                                <span class="category-name">Food & Dining</span>
+                                <span class="category-amount">₹8,500</span>
+                                <span class="category-percentage">33%</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-color" style="background: #764ba2;"></div>
+                                <span class="category-name">Shopping</span>
+                                <span class="category-amount">₹5,930</span>
+                                <span class="category-percentage">23%</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-color" style="background: #f59e0b;"></div>
+                                <span class="category-name">Transportation</span>
+                                <span class="category-amount">₹4,200</span>
+                                <span class="category-percentage">17%</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-color" style="background: #10b981;"></div>
+                                <span class="category-name">Bills & Utilities</span>
+                                <span class="category-amount">₹4,000</span>
+                                <span class="category-percentage">16%</span>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-color" style="background: #3b82f6;"></div>
+                                <span class="category-name">Entertainment</span>
+                                <span class="category-amount">₹2,800</span>
+                                <span class="category-percentage">11%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>📅 Monthly Comparison</h3>
+                        <div class="chart-placeholder" style="height: 250px;">
+                            <p>Bar Chart: Month-over-month comparison</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 24px;">
+                    <h2>📊 Spending Insights</h2>
+                    <div class="budget-list">
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">👍 Top Saving Category</span>
+                                <span class="budget-amount">Bills & Utilities</span>
+                            </div>
+                            <div class="budget-info">
+                                <span>You've saved 67% of your budget in this category</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">⚠️ Watch Out</span>
+                                <span class="budget-amount">Shopping</span>
+                            </div>
+                            <div class="budget-info">
+                                <span>You're spending 15% more than last month</span>
+                            </div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-name">🎯 Budget Goal</span>
+                                <span class="budget-amount">On Track</span>
+                            </div>
+                            <div class="budget-info">
+                                <span>You're 5% under your monthly budget - great job!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support Section -->
+            <section id="support" class="section">
+                <div class="header">
+                    <h1>Support</h1>
+                    <p>Need help? We're here for you!</p>
+                </div>
+
+                <div class="card">
+                    <h2>📧 Contact Support</h2>
+                    <div style="padding: 20px;">
+                        <p style="font-size: 16px; color: #4b5563; margin-bottom: 20px;">
+                            Have questions or need assistance? Our support team is ready to help you with any issues or inquiries.
+                        </p>
+                        
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 12px; color: white; margin-bottom: 20px;">
+                            <h3 style="margin-bottom: 15px; font-size: 20px;">✉️ Email Support</h3>
+                            <p style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">
+                                <a href="mailto:budgetease69@gmail.com" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                                    <span>📨</span>
+                                    <span>budgetease69@gmail.com</span>
+                                </a>
+                            </p>
+                            <p style="font-size: 14px; opacity: 0.9;">
+                                We typically respond within 24 hours
+                            </p>
+                        </div>
+
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea;">
+                            <h4 style="color: #1f2937; margin-bottom: 10px;">🕒 Support Hours</h4>
+                            <p style="color: #6b7280; margin-bottom: 5px;">Monday - Friday: 9:00 AM - 6:00 PM IST</p>
+                            <p style="color: #6b7280;">Saturday - Sunday: 10:00 AM - 4:00 PM IST</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>❓ Frequently Asked Questions</h2>
+                    <div style="padding: 20px;">
+                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb;">
+                            <h4 style="color: #1f2937; margin-bottom: 8px;">How do I set a budget?</h4>
+                            <p style="color: #6b7280; font-size: 14px;">Navigate to the Budgets section and click on "Set Budget" to define your monthly spending limits.</p>
+                        </div>
+                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb;">
+                            <h4 style="color: #1f2937; margin-bottom: 8px;">Can I export my expense data?</h4>
+                            <p style="color: #6b7280; font-size: 14px;">Yes! You can download your expense reports in CSV or PDF format from the Analytics section.</p>
+                        </div>
+                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb;">
+                            <h4 style="color: #1f2937; margin-bottom: 8px;">How do reminders work?</h4>
+                            <p style="color: #6b7280; font-size: 14px;">Set up reminders for recurring bills and payments. You'll receive notifications before the due date.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #1f2937; margin-bottom: 8px;">Is my financial data secure?</h4>
+                            <p style="color: #6b7280; font-size: 14px;">Absolutely! We use industry-standard encryption to protect your data and never share it with third parties.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav link
+            event.target.closest('.nav-link').classList.add('active');
+        }
+    </script>
+</body>
+</html>

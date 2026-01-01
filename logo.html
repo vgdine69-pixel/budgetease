@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BudgetEase Logo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .logo-container {
+            text-align: center;
+        }
+        .logo {
+            width: 320px;
+            height: 320px;
+            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 0 auto 20px;
+        }
+        .logo-text {
+            color: white;
+            font-size: 120px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .instructions {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 400px;
+        }
+        h2 {
+            color: #10B981;
+            margin-top: 0;
+        }
+        ol {
+            text-align: left;
+            line-height: 1.8;
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+    </style>
+</head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5302127439054265"
+     crossorigin="anonymous"></script>
+<body>
+    <div class="logo-container">
+        <div class="logo" id="logo">
+            <div class="logo-text">BE</div>
+        </div>
+        
+        <div class="instructions">
+            <h2>📸 How to Save Logo for Instagram</h2>
+            <ol>
+                <li>Right-click on the logo above</li>
+                <li>Select "Save image as..."</li>
+                <li>Save as "budgetease-logo.png"</li>
+                <li>Go to Instagram profile</li>
+                <li>Click "Add profile photo"</li>
+                <li>Upload the saved image</li>
+                <li>Done! ✅</li>
+            </ol>
+            <p><strong>Alternative:</strong> Take a screenshot of just the logo circle and crop it to square.</p>
+        </div>
+        
+        <button class="download-btn" onclick="downloadLogo()">📥 Download Logo</button>
+    </div>
+
+    <script>
+        function downloadLogo() {
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = 320;
+            canvas.height = 320;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw gradient circle
+            const gradient = ctx.createLinearGradient(0, 0, 320, 320);
+            gradient.addColorStop(0, '#10B981');
+            gradient.addColorStop(1, '#3B82F6');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(160, 160, 160, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 120px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.fillText('BE', 160, 160);
+            
+            // Download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'budgetease-logo.png';
+                a.click();
+                URL.revokeObjectURL(url);
+                alert('Logo downloaded! Now upload it to Instagram.');
+            });
+        }
+    </script>
+</body>
+</html>
