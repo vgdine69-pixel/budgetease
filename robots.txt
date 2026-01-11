@@ -1,5 +1,6 @@
-# robots.txt
+# robots.txt for BudgetEase
 User-agent: *
-allow: 
-allow: /cgi-bin/
-Sitemap: https://budgetease.info/
+Allow: /
+
+Sitemap: https://budgetease.info/sitemap.xml
+
