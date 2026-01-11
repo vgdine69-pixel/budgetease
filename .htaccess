@@ -1,0 +1,7 @@
+# Set correct content-type for XML files
+<FilesMatch "\.xml$">
+    Header set Content-Type "application/xml; charset=utf-8"
+</FilesMatch>
+
+# Alternative method using AddType
+AddType application/xml .xml
